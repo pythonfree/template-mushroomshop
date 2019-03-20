@@ -25,11 +25,14 @@ if (isset($_GET['cat'])){
     <div class="main">
         <?php foreach ($products as $product): ?>
         <div class="card">
-            <a href="product.php">
+            <a href="product.php?product=<?= $product['title']; ?>">
                 <img src="img/<?= $product['img']; ?>" alt="<?= $product['rus_name']; ?>">
             </a>
             <div class="label"><?= $product['rus_name']; ?> (<?= $product['price']; ?> рублей)</div>
-            <button type="submit">Добавить в корзину</button>
+            <form action="actions/add.php" method="post">
+                <input type="hidden" name="id" value="<?= $product['id']; ?>">
+                <input type="submit" value="Добавить в корзину">
+            </form>
         </div>
         <?php endforeach; ?>
     </div>

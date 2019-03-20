@@ -65,7 +65,7 @@ img {
 }
 
 .main, nav {
-    width: 1170px;
+    width: 1400px;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
