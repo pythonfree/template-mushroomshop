@@ -4,18 +4,18 @@ require_once __DIR__ . '/parts/header.php';
 
 if (isset($_GET['cat'])){
     $currentCat = $_GET['cat'];
-    $products = $connect->query("SELECT * FROM products WHERE cat='$currentCat'", PDO::ATTR_ERRMODE);
+    $products = $dbh->query("SELECT * FROM products WHERE cat='$currentCat'", PDO::ATTR_ERRMODE);
     $products = $products->fetchAll(PDO::FETCH_ASSOC);
     if (empty($products)){
         die(
-                '<h1>Подождем четверга... и тогда грибочки этой категории обязательно нас порадуют!</h1>
+                '<h1 class="cart-title">Подождем четверга... и тогда грибочки этой категории обязательно нас порадуют!</h1>
                  </body>
                  </html>   
                  '
         );
     }
 } else {
-    $products = $connect->query("SELECT * FROM products");
+    $products = $dbh->query("SELECT * FROM products");
     $products = $products->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -29,10 +29,7 @@ if (isset($_GET['cat'])){
                 <img src="img/<?= $product['img']; ?>" alt="<?= $product['rus_name']; ?>">
             </a>
             <div class="label"><?= $product['rus_name']; ?> (<?= $product['price']; ?> рублей)</div>
-            <form action="actions/add.php" method="post">
-                <input type="hidden" name="id" value="<?= $product['id']; ?>">
-                <input type="submit" value="Добавить в корзину">
-            </form>
+            <?php require __DIR__ . '/parts/add-form.php'; ?>
         </div>
         <?php endforeach; ?>
     </div>

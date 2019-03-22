@@ -8,9 +8,12 @@ if (isset($_POST['id'])){
 //    unset($_SESSION['totalPrice']);
 //    unset($_SESSION['cart']);
 
-    
+    if (isset($_SESSION['order'])){
+        unset($_SESSION['order']);
+    }
+
     $id = $_POST['id'];
-    $product = $connect->query("SELECT * FROM products WHERE id='$id'");
+    $product = $dbh->query("SELECT * FROM products WHERE id='$id'");
     $product = $product->fetch(PDO::FETCH_ASSOC);
 
     if (isset($_SESSION['cart'][$id])){
@@ -24,9 +27,11 @@ if (isset($_POST['id'])){
             'quantity'  => 1,
         ];
     }
-    
-    $_SESSION['totalQuantity'] = $_SESSION['totalQuantity'] ? $_SESSION['totalQuantity'] +=1 : 1;
-    $_SESSION['totalPrice'] = $_SESSION['totalPrice'] ? $_SESSION['totalPrice'] + $product['price'] : $product['price'];
+
+    $_SESSION['totalQuantity'] = isset($_SESSION['totalQuantity']) ? $_SESSION['totalQuantity'] + 1 : 1;
+    $_SESSION['totalPrice'] = isset($_SESSION['totalPrice']) ? $_SESSION['totalPrice'] + $product['price'] : $product['price'];
+
+
 }
 
-header('Location: /index.php');
+header("Location: {$_SERVER['HTTP_REFERER']}");
